@@ -43,7 +43,8 @@ Environment variables:
 
   CLIENT_ID               - Client ID of the downstream client
   CLIENT_SECRET           - Client secret of the downstream client
-  REDIRECT_URIS           - Comma separated list of allowed downstream redirect URIs
+  REDIRECT_URIS           - Comma separated list of allowed downstream redirect URIs,
+                            supports wildcards: "*" (any) or trailing "*" (prefix)
 
   STATIC_USER_SUB                - Subject of the static user (default: static-user)
   STATIC_USER_EMAIL              - Email of the static user
@@ -80,7 +81,7 @@ func init() {
 
 	f.StringVar(&cfg.ClientID, "client-id", e("CLIENT_ID", ""), "Downstream client ID")
 	f.StringVar(&cfg.ClientSecret, "client-secret", e("CLIENT_SECRET", ""), "Downstream client secret")
-	f.StringVar(&redirectURIs, "redirect-uris", e("REDIRECT_URIS", ""), "Comma separated allowed downstream redirect URIs")
+	f.StringVar(&redirectURIs, "redirect-uris", e("REDIRECT_URIS", ""), "Comma separated allowed downstream redirect URIs (\"*\" = any, trailing \"*\" = prefix)")
 
 	f.StringVar(&cfg.StaticUser.Sub, "static-user-sub", e("STATIC_USER_SUB", "static-user"), "Subject of the static user")
 	f.StringVar(&cfg.StaticUser.Email, "static-user-email", e("STATIC_USER_EMAIL", ""), "Email of the static user")

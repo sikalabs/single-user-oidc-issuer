@@ -61,7 +61,7 @@ All options are also available as flags, see `single-user-oidc-issuer server --h
 | `ALLOWED_EMAILS` | Comma separated emails allowed to log in |
 | `ALLOWED_EMAIL_DOMAINS` | Comma separated email domains allowed to log in |
 | `CLIENT_ID` / `CLIENT_SECRET` | Downstream client credentials (required) |
-| `REDIRECT_URIS` | Comma separated allowed downstream redirect URIs (empty = any http(s) URI) |
+| `REDIRECT_URIS` | Comma separated allowed downstream redirect URIs. `*` allows any http(s) URI, trailing `*` matches by prefix (eg. `https://app.example.com/*`), other entries must match exactly. Empty = any http(s) URI. |
 | `STATIC_USER_SUB` | `sub` of the static user (default `static-user`) |
 | `STATIC_USER_EMAIL` | `email` of the static user (`email_verified` is `true`) |
 | `STATIC_USER_NAME` | `name` of the static user |

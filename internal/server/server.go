@@ -7,6 +7,7 @@ import (
 	"html"
 	"log"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/go-chi/chi/v5"
@@ -113,8 +114,8 @@ func (s *Server) Start() error {
 	if len(s.cfg.AllowedEmails) == 0 && len(s.cfg.AllowedEmailDomains) == 0 {
 		log.Printf("WARNING: no ALLOWED_EMAILS / ALLOWED_EMAIL_DOMAINS, every upstream user can log in")
 	}
-	if len(s.cfg.RedirectURIs) == 0 {
-		log.Printf("WARNING: no REDIRECT_URIS, any http(s) redirect URI is accepted")
+	if len(s.cfg.RedirectURIs) == 0 || slices.Contains(s.cfg.RedirectURIs, "*") {
+		log.Printf("WARNING: any http(s) redirect URI is accepted, set REDIRECT_URIS to restrict it")
 	}
 
 	addr := ":" + s.cfg.Port

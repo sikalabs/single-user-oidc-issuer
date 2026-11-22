@@ -368,12 +368,28 @@ func (p *Provider) sign(claims jwt.MapClaims) (string, error) {
 	return t.SignedString(p.keys.PrivateKey())
 }
 
+// isAllowedRedirectURI checks redirect URI against REDIRECT_URIS.
+// Entries support wildcards like in Keycloak: "*" allows any http(s) URI,
+// trailing "*" (eg. "https://app.example.com/*") matches by prefix,
+// other entries must match exactly. Empty list allows any http(s) URI.
 func (p *Provider) isAllowedRedirectURI(uri string) bool {
-	if len(p.cfg.RedirectURIs) == 0 {
-		u, err := url.Parse(uri)
-		return err == nil && (u.Scheme == "http" || u.Scheme == "https") && u.Host != ""
+	u, err := url.Parse(uri)
+	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" || u.Fragment != "" {
+		return false
 	}
-	return slices.Contains(p.cfg.RedirectURIs, uri)
+	if len(p.cfg.RedirectURIs) == 0 {
+		return true
+	}
+	for _, allowed := range p.cfg.RedirectURIs {
+		if prefix, ok := strings.CutSuffix(allowed, "*"); ok {
+			if strings.HasPrefix(uri, prefix) {
+				return true
+			}
+		} else if uri == allowed {
+			return true
+		}
+	}
+	return false
 }
 
 func (p *Provider) isAllowedUser(email string, emailVerified *bool) bool {
