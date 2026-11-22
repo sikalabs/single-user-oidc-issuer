@@ -19,3 +19,8 @@
 *.local.txt
 *.local.md
 Makefile.local.mk
+
+# Go
+/single-user-oidc-issuer
+*.exe
+/dist/**
