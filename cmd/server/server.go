@@ -32,6 +32,7 @@ Environment variables:
   ISSUER                  - Public URL of this issuer (default: http://localhost:8080)
   PRIVATE_KEY             - RSA private key (PEM) for signing tokens
   PRIVATE_KEY_FILE        - Path to RSA private key (PEM) for signing tokens
+  KEY_SEED                - Seed string for deterministic RSA key generation
 
   UPSTREAM_ISSUER         - Upstream OIDC issuer URL (eg. https://keycloak/realms/main)
   UPSTREAM_CLIENT_ID      - Client ID registered in upstream provider
@@ -53,7 +54,7 @@ Environment variables:
   STATIC_USER_GROUPS             - Comma separated groups of the static user
 
 The upstream redirect URI is <ISSUER>/callback.
-If no private key is provided, a random RSA key is generated on each startup.
+If no private key or key seed is provided, a random RSA key is generated on each startup.
 If ALLOWED_EMAILS and ALLOWED_EMAIL_DOMAINS are empty, every user
 authenticated by the upstream provider is allowed.`,
 	Args: cobra.NoArgs,
@@ -70,6 +71,7 @@ func init() {
 	f.StringVarP(&cfg.Issuer, "issuer", "i", e("ISSUER", "http://localhost:8080"), "Public URL of this issuer")
 	f.StringVar(&cfg.PrivateKey, "private-key", e("PRIVATE_KEY", ""), "RSA private key (PEM) for signing tokens (empty = random)")
 	f.StringVar(&cfg.PrivateKeyFile, "private-key-file", e("PRIVATE_KEY_FILE", ""), "Path to RSA private key (PEM) for signing tokens")
+	f.StringVarP(&cfg.KeySeed, "key-seed", "k", e("KEY_SEED", ""), "Seed string for deterministic RSA key generation (empty = random)")
 
 	f.StringVar(&cfg.UpstreamIssuer, "upstream-issuer", e("UPSTREAM_ISSUER", ""), "Upstream OIDC issuer URL")
 	f.StringVar(&cfg.UpstreamClientID, "upstream-client-id", e("UPSTREAM_CLIENT_ID", ""), "Upstream client ID")

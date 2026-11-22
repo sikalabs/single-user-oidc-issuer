@@ -108,8 +108,8 @@ func (s *Server) handleHome(w http.ResponseWriter, r *http.Request) {
 
 // Start starts the HTTP server
 func (s *Server) Start() error {
-	if oidc.IsRandomKey(s.cfg.PrivateKey, s.cfg.PrivateKeyFile) {
-		log.Printf("WARNING: no private key configured, using random key (tokens become invalid on restart)")
+	if oidc.IsRandomKey(s.cfg.PrivateKey, s.cfg.PrivateKeyFile, s.cfg.KeySeed) {
+		log.Printf("WARNING: no private key or key seed configured, using random key (tokens become invalid on restart)")
 	}
 	if len(s.cfg.AllowedEmails) == 0 && len(s.cfg.AllowedEmailDomains) == 0 {
 		log.Printf("WARNING: no ALLOWED_EMAILS / ALLOWED_EMAIL_DOMAINS, every upstream user can log in")

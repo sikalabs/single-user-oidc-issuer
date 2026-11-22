@@ -12,9 +12,10 @@ type Config struct {
 	Port   string
 	Issuer string
 
-	// Signing key (PEM), empty = random key on each start
+	// Signing key (PEM or seed), all empty = random key on each start
 	PrivateKey     string
 	PrivateKeyFile string
+	KeySeed        string
 
 	// Upstream OIDC provider (eg. Keycloak) used to authenticate real users
 	UpstreamIssuer       string
@@ -58,8 +59,14 @@ func (c *Config) Validate() error {
 	req("client-id", c.ClientID)
 	req("client-secret", c.ClientSecret)
 	req("static-user-sub", c.StaticUser.Sub)
-	if c.PrivateKey != "" && c.PrivateKeyFile != "" {
-		errs = append(errs, errors.New("use only one of private-key and private-key-file"))
+	keySources := 0
+	for _, v := range []string{c.PrivateKey, c.PrivateKeyFile, c.KeySeed} {
+		if v != "" {
+			keySources++
+		}
+	}
+	if keySources > 1 {
+		errs = append(errs, errors.New("use only one of private-key, private-key-file and key-seed"))
 	}
 	c.Issuer = strings.TrimSuffix(c.Issuer, "/")
 	return errors.Join(errs...)

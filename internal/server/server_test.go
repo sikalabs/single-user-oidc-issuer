@@ -33,7 +33,7 @@ type fakeUpstream struct {
 }
 
 func newFakeUpstream(t *testing.T, email string) *fakeUpstream {
-	keys, err := oidc.NewKeys("", "")
+	keys, err := oidc.NewKeys("", "", "")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -55,6 +55,7 @@ All options are also available as flags, see `single-user-oidc-issuer server --h
 | `PORT` | Server port (default `8080`) |
 | `ISSUER` | Public URL of this issuer (default `http://localhost:8080`) |
 | `PRIVATE_KEY` / `PRIVATE_KEY_FILE` | RSA private key (PEM) for signing tokens. Random key on each start if empty. |
+| `KEY_SEED` | Seed string for deterministic RSA key generation, alternative to `PRIVATE_KEY`. Anyone who knows the seed can sign tokens, treat it as a secret. |
 | `UPSTREAM_ISSUER` | Upstream OIDC issuer URL (required) |
 | `UPSTREAM_CLIENT_ID` / `UPSTREAM_CLIENT_SECRET` | Client registered in the upstream provider |
 | `UPSTREAM_SCOPES` | Upstream scopes (default `openid,email,profile`) |

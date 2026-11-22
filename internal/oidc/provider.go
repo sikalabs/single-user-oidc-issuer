@@ -36,7 +36,7 @@ type Provider struct {
 
 // NewProvider creates a new provider and discovers the upstream provider
 func NewProvider(ctx context.Context, cfg *config.Config, store *storage.Storage) (*Provider, error) {
-	keys, err := NewKeys(cfg.PrivateKey, cfg.PrivateKeyFile)
+	keys, err := NewKeys(cfg.PrivateKey, cfg.PrivateKeyFile, cfg.KeySeed)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load keys: %w", err)
 	}
